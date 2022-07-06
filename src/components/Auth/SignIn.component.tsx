@@ -3,10 +3,13 @@ import { useFormik } from "formik";
 import { Button, Link, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { publicApi } from "../../config/axios.config";
+import { publicApi, authProtectedApi } from "../../config/axios.config";
+import { userAtom } from "../../recoil/atoms";
+import { useEffect } from "react";
+import { useUser } from "../../hooks/useUser.hook";
 
 const SignIn = () => {
-  // const [user, setUser] = useRecoilState(userState);
+  const [, setUser] = useRecoilState(userAtom);
   const navigate = useNavigate();
 
   const { isSubmitting, errors, ...formik } = useFormik({
@@ -22,12 +25,14 @@ const SignIn = () => {
           password: values.password,
         });
         if (response.data.access_token) {
+          localStorage.setItem("token", response.data.access_token);
+          const { data } = await authProtectedApi().get("/auth/me");
+          setUser(data);
           navigate("/", {
             replace: true,
           });
-          // getUser -> set to Recoil -> redirect to / -> App (check user.authenticated) -> valid and let it go
         }
-      } catch (error: any) {
+      } catch {
         setErrors({
           password: "Invalid username or password",
         });

@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { userAtom } from "../recoil/atoms";
+import { userAtom, defaultUser } from "../recoil/atoms";
 import { authProtectedApi } from "../config/axios.config";
+import { useNavigate } from "react-router-dom";
 const getUser = async () => {
   try {
-    // must be myself
-    const { data } = await authProtectedApi().get("/user/1");
+    const { data } = await authProtectedApi().get("/auth/me");
     return data;
   } catch (error) {
     return null;
@@ -13,16 +13,26 @@ const getUser = async () => {
 };
 export const useUser = () => {
   const [user, setUser] = useRecoilState(userAtom);
-  const [error, setError] = useState("");
-  useEffect(async () => {
+  const navigate = useNavigate();
+
+  const onMount = useCallback(async () => {
     if (!user.id) {
       const user = await getUser();
       if (user) {
         setUser(user);
       } else {
-        setError("User not found!");
+        navigate("/login");
       }
     }
+  }, [setUser]);
+  const logout = useCallback(async () => {
+    setUser(defaultUser);
+    localStorage.removeItem("token");
+    navigate("/login");
+  }, [setUser]);
+
+  useEffect(() => {
+    onMount();
   }, []);
-  return { user, error };
+  return { user, logout };
 };

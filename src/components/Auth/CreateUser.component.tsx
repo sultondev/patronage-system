@@ -51,7 +51,7 @@ const CreateUser = () => {
   return (
     <section className="createUser h-screen flex justify-center items-center">
       <div className="container mx-auto flex justify-center flex-col gap-6 items-center">
-        <h1 className="text-3xl text-white">Hush kelibsiz</h1>
+        <h1 className="text-3xl text-white">Moderator yaratish</h1>
 
         <form
           onSubmit={formik.handleSubmit}

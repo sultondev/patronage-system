@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useUser } from "../../hooks/useUser.hook";
 
 const NavBar = () => {
+  const { logout } = useUser();
   return (
     <nav className="nav">
       <ul className="nav-list flex gap-4">
@@ -11,7 +13,9 @@ const NavBar = () => {
         <li className="nav-list__item">
           <Link to="create-user">Create User</Link>
         </li>
-        <li className="nav-list__item">Log Out</li>
+        <li className="nav-list__item" onClick={logout}>
+          Log Out
+        </li>
       </ul>
     </nav>
   );
