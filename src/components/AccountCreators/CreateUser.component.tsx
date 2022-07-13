@@ -18,7 +18,7 @@ const options = {
     createUser: [],
   },
 };
-const CreateModerator = () => {
+const CreateUser = () => {
   const [user] = useRecoilState(userAtom);
   const formik = useFormik({
     initialValues: {
@@ -146,4 +146,4 @@ const CreateModerator = () => {
   );
 };
 
-export default CreateModerator;
+export default CreateUser;

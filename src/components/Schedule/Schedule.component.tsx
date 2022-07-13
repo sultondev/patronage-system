@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { useParams, Routes, Route } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useApi } from "../../hooks/useApi.hook";
 import { Schedule } from "../../typing/types/Schedule.type";
-
+import "./Schedule.style.css";
 type CategoryType = {
   id: number;
   name: string;
@@ -30,17 +30,25 @@ export const SchedulePage = () => {
   }
 
   return (
-    <section className="schedule">
-      <hr />
-      <h2>Tartiblar</h2>
-      <ul className="schedule-list">
+    <section className="schedule my-4 py-4 border-t-2 border-black">
+      <h2 className={"text-4xl font-bold mb-4"}>Tartiblar</h2>
+      <ul className="schedule-list flex gap-4 flex-wrap md:flex-row md:justify-start ex-sm:justify-center ex-sm:items-center ex-sm:flex-col">
         {data.schedules.map((schedule) => {
           return (
-            <li key={schedule.id}>
+            <li key={schedule.id} className="flex">
               <Link
                 to={{
                   pathname: `/schedules/${schedule.id}`,
                 }}
+                className="
+                schedule-list__item
+                bg-orange-500 
+                rounded-md text-white text-3xl px-4 py-1
+                ex-sm:text-lg
+                ex-sm:min-w-[136px] ex-sm:min-h-[198px] ex-sm:max-w-[136px] ex-sm:max-h-[198px] 
+                md:min-h-[300px] md:max-h-[300px] md:min-w-[200px] md:max-w-[200px] 
+                
+                "
               >
                 {schedule.name}
               </Link>

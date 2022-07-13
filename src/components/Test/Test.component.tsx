@@ -5,7 +5,7 @@ import { Schedule } from "../../typing/types/Schedule.type";
 import "./Test.style.css";
 const TestComponent = () => {
   const { scheduleId } = useParams();
-  const { data, error, loading } = useApi<Schedule>(`shcedules/${scheduleId}`, {
+  const { data, error, loading } = useApi<Schedule>(`schedule/${scheduleId}`, {
     params: {
       include: "all",
     },
@@ -19,15 +19,19 @@ const TestComponent = () => {
   }
 
   return (
-    <section className="schedule">
+    <section className="test">
       <hr />
       <h2>Tartib {data.name}</h2>
-      <ul className="schedule-list flex flex-col gap-2">
+      <ul className="test-list flex flex-col gap-2">
         {data.questions.map((question) => {
           return (
             <li
               key={question.id}
-              className="schedule-list__item bg-orange-400  shadow-lg hadow-orange-600/50 text-white md:py-4 md:px-4 ex-sm:py-6 ex-sm:px-8"
+              className="test-list__item bg-orange-400  shadow-lg 
+              hadow-orange-600/50 text-white md:py-4 md:px-4 ex-sm:py-6 
+              ex-sm:px-8 ex-sm:max-w-full
+              md:max-w-auto
+              "
             >
               <div className="block">
                 <input type="checkbox" name="questions" id={question.title} />

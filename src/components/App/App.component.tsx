@@ -3,7 +3,7 @@ import Header from "../Header/Header.component";
 import { useRecoilState } from "recoil";
 import { authStatusStateData } from "../../recoil/atoms";
 import { useNavigate, Routes, Route } from "react-router-dom";
-import CreateUser from "../AccountCreators/CreateModerator.component";
+import CreateUser from "../AccountCreators/CreateUser.component";
 import { useUser } from "../../hooks/useUser.hook";
 import { useEffect } from "react";
 import { Roles } from "../../typing/enums/Role.enum";

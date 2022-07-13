@@ -12,12 +12,17 @@ export const Categories = () => {
   }
 
   return (
-    <section className="categories">
-      <h1>Bo&#39;limlar</h1>
-      <ul className="categories-list">
+    <section className="categories py-4">
+      <h4 className="text-4xl font-bold mb-4">Bo&#39;limlar</h4>
+      <ul className="categories-list flex gap-4 py-4 flex-wrap md:justify-start ex-sm:justify-center">
         {data.map((category: Category) => (
-          <li key={category.id}>
-            <Link to={`/categories/${category.id}`}>{category.name}</Link>
+          <li key={category.id} className="flex">
+            <Link
+              to={`/categories/${category.id}`}
+              className="bg-blue-500 min-h-[300px] min-w-[200px] max-w-[200px] max-w rounded-md text-white text-3xl px-4 py-1"
+            >
+              {category.name}
+            </Link>
           </li>
         ))}
       </ul>
