@@ -4,13 +4,12 @@ import { Button, Link, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { publicApi, authProtectedApi } from "../../config/axios.config";
-import { userAtom } from "../../recoil/atoms";
-import { useEffect } from "react";
-import { useUser } from "../../hooks/useUser.hook";
+import { userAtom, authTokenStateData } from "../../recoil/atoms";
 
 const SignIn = () => {
   const [, setUser] = useRecoilState(userAtom);
   const navigate = useNavigate();
+  const [token, setToken] = useRecoilState(authTokenStateData);
 
   const { isSubmitting, errors, ...formik } = useFormik({
     initialValues: {
@@ -28,6 +27,7 @@ const SignIn = () => {
           localStorage.setItem("token", response.data.access_token);
           const { data } = await authProtectedApi().get("/auth/me");
           setUser(data);
+          setToken(response.data.access_token);
           navigate("/", {
             replace: true,
           });

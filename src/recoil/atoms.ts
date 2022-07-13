@@ -15,7 +15,17 @@ export const defaultUser = {
   updatedAt: "",
 };
 
+export const authTokenStateData = atom({
+  key: "authTokenStateData",
+  default: "",
+});
+
 export const userAtom = atom({
   key: "userAtom",
   default: defaultUser,
+});
+
+export const menuAtom = atom({
+  key: "menuAtom",
+  default: "hidden",
 });
