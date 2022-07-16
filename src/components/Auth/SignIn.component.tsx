@@ -9,7 +9,7 @@ import { userAtom, authTokenStateData } from "../../recoil/atoms";
 const SignIn = () => {
   const [, setUser] = useRecoilState(userAtom);
   const navigate = useNavigate();
-  const [token, setToken] = useRecoilState(authTokenStateData);
+  const [, setToken] = useRecoilState(authTokenStateData);
 
   const { isSubmitting, errors, ...formik } = useFormik({
     initialValues: {

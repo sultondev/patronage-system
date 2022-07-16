@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
+import { memo } from "react";
+import { Link, Routes, Route } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useApi } from "../../hooks/useApi.hook";
 import { Schedule } from "../../typing/types/Schedule.type";
-import "./Schedule.style.css";
+import ScheduleDetailComponent from "./ScheduleDetail.component";
+import "./Schedules.style.css";
 type CategoryType = {
   id: number;
   name: string;
@@ -11,7 +13,7 @@ type CategoryType = {
   schedules: Schedule[];
 };
 
-export const SchedulePage = () => {
+const SchedulesComponent = () => {
   const { categoryId } = useParams();
   const { data, error, loading } = useApi<CategoryType>(
     `categories/${categoryId}`,
@@ -38,7 +40,7 @@ export const SchedulePage = () => {
             <li key={schedule.id} className="flex">
               <Link
                 to={{
-                  pathname: `/schedules/${schedule.id}`,
+                  pathname: `/categories/${categoryId}/schedules/${schedule.id}`,
                 }}
                 className="
                 schedule-list__item
@@ -56,6 +58,11 @@ export const SchedulePage = () => {
           );
         })}
       </ul>
+      <Routes>
+        <Route path="/:scheduleId" element={<ScheduleDetailComponent />} />
+      </Routes>
     </section>
   );
 };
+
+export default memo(SchedulesComponent);

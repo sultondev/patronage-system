@@ -1,7 +1,7 @@
 import { Link, Route, Routes } from "react-router-dom";
 import { useApi } from "../../hooks/useApi.hook";
 import { Category } from "../../typing/types/Category.type";
-import { SchedulePage } from "../Schedule/Schedule.component";
+import SchedulesComponent from "../Schedules/Schedules.component";
 export const Categories = () => {
   const { data, error, loading } = useApi("categories/all");
   if (loading) {
@@ -18,7 +18,7 @@ export const Categories = () => {
         {data.map((category: Category) => (
           <li key={category.id} className="flex">
             <Link
-              to={`/categories/${category.id}`}
+              to={`/categories/${category.id}/schedules`}
               className="bg-blue-500 min-h-[300px] min-w-[200px] max-w-[200px] max-w rounded-md text-white text-3xl px-4 py-1"
             >
               {category.name}
@@ -27,7 +27,10 @@ export const Categories = () => {
         ))}
       </ul>
       <Routes>
-        <Route path=":categoryId" element={<SchedulePage />} />
+        <Route
+          path=":categoryId/schedules/*"
+          element={<SchedulesComponent />}
+        />
       </Routes>
     </section>
   );
