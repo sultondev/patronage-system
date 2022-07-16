@@ -9,7 +9,6 @@ import Layout from "../Layouts/BaseLayout";
 import CreateApplicationComponent from "../ApplicationCreator/CreateApplication.component";
 import Applications from "../Applications/Applications.component";
 import { Users } from "../Users/Users.component";
-import { ProcessStepper } from "../Stepper/ProcessStepper.component";
 
 const layouts: Record<Roles, LayoutProps | null> = {
   [Roles.SUPERUSER]: {
@@ -36,7 +35,6 @@ const layouts: Record<Roles, LayoutProps | null> = {
         link: "/categories",
         element: <Categories />,
       },
-      
     },
   },
   [Roles.MODERATOR]: {
