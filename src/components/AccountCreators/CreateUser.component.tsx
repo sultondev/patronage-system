@@ -1,8 +1,13 @@
 import "./styles/CreateModerator.style.css";
-import { useState } from "react";
-import { FastField, Field, useFormik } from "formik";
-import axios from "axios";
-import { Button, TextField } from "@mui/material";
+import { useFormik } from "formik";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import { userAtom } from "../../recoil/atoms";
 import { useRecoilState } from "recoil";
 import { Roles } from "../../typing/enums/Role.enum";
@@ -25,29 +30,32 @@ const CreateUser = () => {
       username: "",
       password: "",
       name: "",
-      surename: "",
+      surname: "",
       role: "",
       email: "",
       phone: "",
     },
-    onSubmit: (values) => {
+    onSubmit: (values, formikHelpers) => {
+      if (Object.values(formik.errors).some((v) => v)) return;
+
       authProtectedApi()
         .post("/users", values)
-        .then(function (response) {
-          formik.resetForm();
+        .then(function () {
+          formikHelpers.resetForm();
         })
         .catch(function (error) {
           console.log(error);
+        })
+        .finally(function () {
+          formikHelpers.setSubmitting(false);
         });
-
-      alert(JSON.stringify(values, null, 2));
     },
   });
 
   return (
     <section className="createUser h-screen flex justify-center items-center">
       <div className="container mx-auto flex justify-center flex-col gap-6 items-center">
-        <h1 className="text-3xl text-white">Foydalanuchchi yaratish</h1>
+        <h1 className="text-3xl">Foydalanuvchi yaratish</h1>
 
         <form
           onSubmit={formik.handleSubmit}
@@ -89,28 +97,33 @@ const CreateUser = () => {
             required
           />
           <TextField
-            id="surename"
-            name="surename"
+            id="surname"
+            name="surname"
             type="text"
             onChange={formik.handleChange}
-            value={formik.values.surename}
+            value={formik.values.surname}
             label="Familyangizni kiriting"
             fullWidth
             required
           />
-          <select
-            value={formik.values.role}
-            onChange={formik.handleChange}
-            name="role"
-            id="role"
-          >
-            <option value="">Ishlashni tanlang</option>
-            {options[user.role as Roles].createUser.map((role) => (
-              <option key={"role" + role} value={role}>
-                {role}
-              </option>
-            ))}
-          </select>
+
+          <FormControl fullWidth>
+            <InputLabel id="role-label">Ishlashni tanlang</InputLabel>
+            <Select
+              id="role"
+              labelId="role-label"
+              label="Ishlashni tanlang"
+              fullWidth
+              value={formik.values.role}
+              onChange={(e) => formik.handleChange("role")(e.target.value)}
+            >
+              {options[user.role as Roles].createUser.map((role) => (
+                <MenuItem key={"role" + role} value={role}>
+                  {role}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <TextField
             // html input attribute
             id="email"
@@ -137,7 +150,12 @@ const CreateUser = () => {
           />
 
           <div className="flex w-full justify-between mt-4"></div>
-          <Button variant="outlined" fullWidth type="submit">
+          <Button
+            disabled={formik.isSubmitting}
+            variant="outlined"
+            fullWidth
+            type="submit"
+          >
             Submit
           </Button>
         </form>

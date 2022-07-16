@@ -3,8 +3,10 @@ import { useUser } from "../../hooks/useUser.hook";
 import { useRecoilState } from "recoil";
 import { menuAtom } from "../../recoil/atoms";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { FC } from "react";
+import { LayoutProps } from "../Layouts/BaseLayout";
 
-const NavBar = () => {
+const NavBar: FC<LayoutProps> = ({ routes }) => {
   const { logout } = useUser();
   const [menuState, setMenuState] = useRecoilState(menuAtom);
 
@@ -32,16 +34,12 @@ const NavBar = () => {
         lg:text-base lg:flex-row lg:text-black
         "
       >
-        <li className="nav-list__item">Ilova</li>
-        <li className="nav-list__item">
-          <Link to="/categories">Bo&#39;limlar</Link>
-        </li>
-        <li className="nav-list__item">To&#39;plamlar</li>
-        <li className="nav-list__item">Savollar</li>
-        <li className="nav-list__item">
-          <Link to="create-user">Foydalanuchi yaratish</Link>
-        </li>
-        <li className="nav-list__item" onClick={logout}>
+        {Object.keys(routes).map((title) => (
+          <li key={"navlink" + routes[title].path} className="nav-list__item">
+            <Link to={routes[title].link || routes[title].path}>{title}</Link>
+          </li>
+        ))}
+        <li className="nav-list__item cursor-pointer" onClick={logout}>
           Log Out
         </li>
       </ul>

@@ -1,47 +1,73 @@
 import "./App.style.css";
-import Header from "../Header/Header.component";
-import { useRecoilState } from "recoil";
-import { authStatusStateData } from "../../recoil/atoms";
-import { useNavigate, Routes, Route } from "react-router-dom";
 import CreateUser from "../AccountCreators/CreateUser.component";
 import { useUser } from "../../hooks/useUser.hook";
-import { useEffect } from "react";
+import { useMemo } from "react";
 import { Roles } from "../../typing/enums/Role.enum";
 import { Categories } from "../Categories/Categories.component";
-import { Test } from "../Test/Test.component";
+import { LayoutProps } from "../Layouts/BaseLayout";
+import Layout from "../Layouts/BaseLayout";
+import CreateApplicationComponent from "../ApplicationCreator/CreateApplication.component";
+import Applications from "../Applications/Applications.component";
+import { Users } from "../Users/Users.component";
 
+const layouts: Record<Roles, LayoutProps | null> = {
+  [Roles.SUPERUSER]: {
+    routes: {
+      "Bo'limlar": {
+        path: "/categories/*",
+        link: "/categories",
+        element: <Categories />,
+      },
+      "Foydalanuchi yaratish": {
+        path: "/create-user",
+        element: <CreateUser />,
+      },
+    },
+  },
+  [Roles.EMPLOYEE]: {
+    routes: {
+      "Ariza yuborish": {
+        path: "/create-application",
+        element: <CreateApplicationComponent />,
+      },
+      "Bo'limlar": {
+        path: "/categories/*",
+        link: "/categories",
+        element: <Categories />,
+      },
+    },
+  },
+  [Roles.MODERATOR]: {
+    routes: {
+      "Arizalarni ko'rish": {
+        path: "/applications",
+        link: "/applications",
+        element: <Applications />,
+      },
+      "Savol yaratish": {
+        path: "/create-question",
+        element: <div>Create question</div>,
+      },
+      "Ishchilar ro'yxati": {
+        path: "/users/*",
+        link: "/users",
+        element: <Users />,
+      },
+    },
+  },
+};
 const App = () => {
   const { user } = useUser();
-  useEffect(() => {
-    console.log(user);
-  }, []);
+  const layoutProps = useMemo(() => layouts[user.role as Roles], [user.role]);
+
   if (!user.id) {
     return <div>Loading...</div>;
   }
   return (
     <div className="app">
-      <div className="md:px-[80px] lg:px-[100px]">
-        <Header />
-        <Routes>
-          <Route path="create-user" element={<CreateUser />} />
-          <Route path="categories/*" element={<Categories />} />
-          <Route path="schedules/:scheduleId" element={<Test />} />
-        </Routes>
-      </div>
+      {layoutProps ? <Layout {...layoutProps} /> : "Error access denied!"}
     </div>
   );
-};
-
-const privileges = {
-  [Roles.SUPERUSER]: {
-    createUser: [Roles.EMPLOYEE, Roles.MODERATOR],
-  },
-  [Roles.EMPLOYEE]: {
-    createUser: [Roles.MODERATOR],
-  },
-  [Roles.MODERATOR]: {
-    createUser: false,
-  },
 };
 
 export default App;
