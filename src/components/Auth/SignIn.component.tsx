@@ -34,7 +34,7 @@ const SignIn = () => {
         }
       } catch {
         setErrors({
-          password: "Invalid username or password",
+          password: "Nato'gri foydalanuvchi yoki parol",
         });
       } finally {
         setSubmitting(false);
@@ -48,7 +48,7 @@ const SignIn = () => {
 
         <form
           onSubmit={formik.handleSubmit}
-          className="signIn-box border-[1px] border-black bg-white min-w-[500px] flex flex-col gap-4 items-center px-6 py-4"
+          className="signIn-box border-[1px] border-black bg-white md:min-w-[500px] ex-sm:min-w-full flex flex-col gap-4 items-center px-6 py-4"
         >
           <h2 className="text-xl">Tarmoqga kirish</h2>
           <TextField
@@ -70,10 +70,10 @@ const SignIn = () => {
             fullWidth
           />
           {errors.password && <p className="text-red-500">{errors.password}</p>}
-          <div className="flex w-full justify-between mt-4">
+          {/* <div className="flex w-full justify-between mt-4">
             <Link href="#">Yangi foydalanuchi yaratish</Link>
             <Link href="#">Parolni esdan chiqardim</Link>
-          </div>
+          </div> */}
           <Button
             disabled={isSubmitting}
             variant="outlined"

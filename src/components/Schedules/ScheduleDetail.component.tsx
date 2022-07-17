@@ -30,9 +30,8 @@ const ScheduleDetailComponent = () => {
 
   return (
     <section className="schedule-detail  my-4 py-4 border-t-2 border-black">
-      <div className="flex justify-between">
-        <h2>{data.name}</h2>
-        <p className="text-2xl">Ha / Yo'q</p>
+      <div className="">
+        <h2 className="text-xl p-1">{data.name}</h2>
       </div>
       <ul className="schedule-detail-list flex flex-col gap-2">
         {data.questions.map((question) => {
@@ -49,32 +48,6 @@ const ScheduleDetailComponent = () => {
                 <label htmlFor={question.title} className="flex-grow-[1]">
                   {question.title}
                 </label>
-                <Formik
-                  initialValues={{
-                    picked: "",
-                  }}
-                  onSubmit={async (values: any) => {
-                    await new Promise((r) => setTimeout(r, 500));
-                    alert(JSON.stringify(values, null, 2));
-                  }}
-                >
-                  {() => (
-                    <Form className="flex ml-1 gap-8 flex-shrink-[200px]">
-                      <Field
-                        type="radio"
-                        name="picked"
-                        value="yes"
-                        className={`text-2xl`}
-                      />
-                      <Field
-                        type="radio"
-                        name="picked"
-                        value="no"
-                        className={`text-2xl`}
-                      />
-                    </Form>
-                  )}
-                </Formik>
               </div>
             </li>
           );
@@ -97,7 +70,7 @@ const ScheduleDetailComponent = () => {
               ? "Savol Yaratish bo'limini ochish"
               : "Savol Yaratish bo'limini yashirish"}
           </Button>
-          <div className={`${questionStatus}`}>
+          <div className={`${questionStatus} my-10`}>
             <QuestionCreator scheduleID={Number(scheduleId)} />
           </div>
         </div>

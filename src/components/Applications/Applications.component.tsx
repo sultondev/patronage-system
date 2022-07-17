@@ -43,7 +43,10 @@ const Applications = () => {
             </Link>
             <p className="text-white font-bold absolute bottom-2 left-2">
               jo'natuvchi:{" "}
-              <Link to={`/users/${app.createdBy}`} className="text-black">
+              <Link
+                to={`/users/${app.createdBy}`}
+                className="text-white bg-gray-700 px-2 py-1 underline"
+              >
                 Profil
               </Link>
             </p>
