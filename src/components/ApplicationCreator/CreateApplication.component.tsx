@@ -1,116 +1,155 @@
-import { useFormik } from "formik";
-import { Button, FormControl, TextField } from "@mui/material";
+import { Box, Step, StepLabel, Stepper } from "@mui/material";
+import {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { authProtectedApi } from "../../config/axios.config";
-import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers-pro";
+import { useUser } from "../../hooks/useUser.hook";
+import AnswerQuestions from "./AnswerQuestions";
+import CreateApplicationForm from "./CreateApplicationForm";
+import CreateClientForm from "./CreateClientForm";
+
+type Answer = {
+  value: boolean;
+  questionId: number;
+};
+
+type Location = {
+  latitude: string;
+  longitude: string;
+};
+
+type Application = {
+  location: Location;
+  comment: string;
+  createdBy: number;
+  categoryId: number;
+  clientId: number;
+  answers: Answer[];
+};
 
 const CreateApplication = () => {
-  const formik = useFormik({
-    initialValues: {
-      name: "",
-      surname: "",
-      dateBirth: null,
-      cardNumber: "",
-      personalNumber: "",
-      address: "",
-    },
-    onSubmit: async (values) => {
-      authProtectedApi()
-        .post("/applications", values)
-        .then(function () {
-          formik.resetForm();
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+  const [activeStep, setActiveStep] = useState(0);
+  const { user } = useUser();
 
-      alert(JSON.stringify(values, null, 2));
+  const [application, setApplication] = useState<Application>({
+    location: {
+      latitude: "",
+      longitude: "",
     },
+    comment: "",
+    createdBy: user.id || 0,
+    categoryId: 0,
+    clientId: 0,
+    answers: [],
   });
 
+  const onClientCreate = useCallback(
+    (data: Pick<Application, "clientId">) => {
+      setApplication((application) => ({
+        ...application,
+        clientId: data.clientId,
+      }));
+
+      handleNext();
+    },
+    [setApplication]
+  );
+
+  const onApplicationCreate = useCallback(
+    ({ categoryId, comment }: Pick<Application, "categoryId" | "comment">) => {
+      console.log(categoryId, comment);
+      setApplication((application) => ({
+        ...application,
+        categoryId,
+        comment,
+      }));
+      handleNext();
+    },
+    [setApplication]
+  );
+  const onAnswersCreate = useCallback(
+    async ({ answers }: Pick<Application, "answers">) => {
+      // setApplication((application) => ());
+      try {
+        const { data } = await authProtectedApi().post("/applications", {
+          ...application,
+          answers,
+        });
+        console.log(data);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [setApplication]
+  );
+
+  const steps = useMemo<
+    {
+      label: string;
+      component: ReactNode;
+    }[]
+  >(
+    () => [
+      {
+        label: "Mijoz ma'lumotlarini kiritish",
+        component: (
+          <CreateClientForm
+            onCreate={onClientCreate}
+            key={"create-client-form"}
+          />
+        ),
+      },
+      {
+        label: "Ariza ma'lumotlarini kiritish",
+        component: (
+          <CreateApplicationForm
+            key={"create-application-form"}
+            onCreate={onApplicationCreate}
+          />
+        ),
+      },
+      {
+        label: "Savollarga javob berish",
+        component: (
+          <AnswerQuestions
+            onCreate={onAnswersCreate}
+            key={"create-answers"}
+            categoryId={application.categoryId}
+          />
+        ),
+      },
+    ],
+    [application.categoryId]
+  );
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  useEffect(() => {
+    console.log(application);
+  }, [application]);
+
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <section className="CreateApplication h-screen flex justify-center items-center">
-        <div className="container mx-auto flex justify-center flex-col gap-6 items-center">
-          <h1 className="text-3xl text-black">Ariza Yuborish</h1>
-
-          <form
-            onSubmit={formik.handleSubmit}
-            className="signIn-box border-[1px] border-black bg-white  flex flex-col gap-4 items-center px-6 py-4
-          ex-sm:min-w-full
-          md:min-w-[500px]
-          "
-          >
-            <TextField
-              id="name"
-              name="name"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.name}
-              label="Mijoz ismini kiriting"
-              fullWidth
-              required
-            />
-            <TextField
-              id="surname"
-              name="surname"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.surname}
-              label="Mijoz familiyasini kiriting"
-              fullWidth
-              required
-            />
-            <FormControl fullWidth>
-              <MobileDatePicker
-                label="Tug'ilgan sanasi"
-                inputFormat="MM/dd/yyyy"
-                value={formik.values.dateBirth}
-                onChange={(e) => formik.setFieldValue("dateBirth", e, true)}
-                renderInput={({ color, ...params }) => (
-                  <TextField {...params} color="primary" />
-                )}
-              />
-            </FormControl>
-            <TextField
-              id="cardNumber"
-              name="cardNumber"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.cardNumber}
-              label="Mijoz passport raqamini kiriting"
-              fullWidth
-              required
-            />
-            <TextField
-              id="personalNumber"
-              name="personalNumber"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.personalNumber}
-              label="Mijozning telefon raqamini kiriting"
-              fullWidth
-              required
-            />
-            <TextField
-              id="address"
-              name="address"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.address}
-              label="Mijoz manzilini kiriting"
-              fullWidth
-              required
-            />
-
-            <Button variant="outlined" fullWidth type="submit">
-              Submit
-            </Button>
-          </form>
-        </div>
-      </section>
-    </LocalizationProvider>
+    <div className="w-full flex justify-center mt-10">
+      <Box sx={{ width: "60%" }}>
+        <Stepper activeStep={activeStep}>
+          {steps.map(({ label }, index) => {
+            return (
+              <Step key={index + "stepper-label"}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            );
+          })}
+        </Stepper>
+        <div className="mt-16">{steps[activeStep].component}</div>
+      </Box>
+    </div>
   );
 };
 
