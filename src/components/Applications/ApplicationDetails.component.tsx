@@ -13,7 +13,7 @@ export const ApplicationDetails = () => {
       const loc = JSON.parse(data.location);
       setLocation(loc);
     }
-  });
+  }, [data]);
   if (loading || error || !data || !location) {
     return (
       <div className="md:px-[80px] lg:px-[100px]">
@@ -21,6 +21,7 @@ export const ApplicationDetails = () => {
       </div>
     );
   }
+  console.log(data);
   return (
     <section className="adetails md:px-[80px] lg:px-[100px]">
       <div className="box border-2 border-slate-700 flex flex-col gap-4 py-4 px-2">
@@ -36,6 +37,7 @@ export const ApplicationDetails = () => {
             {data.location.latitude}
           </a>
         </h4>
+        <ul className=""></ul>
         <p className="text-2xl">Ariza raqami: {data.id}</p>
         <p>{data.comment}</p>
       </div>
