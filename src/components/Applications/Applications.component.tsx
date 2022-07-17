@@ -51,12 +51,6 @@ const Applications = () => {
           </li>
         ))}
       </ul>
-      <Routes>
-        <Route
-          path="/applications/:applicationId"
-          element={<ApplicationDetails />}
-        />
-      </Routes>
     </section>
   );
 };

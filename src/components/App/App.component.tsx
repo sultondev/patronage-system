@@ -9,6 +9,9 @@ import Layout from "../Layouts/BaseLayout";
 import CreateApplicationComponent from "../ApplicationCreator/CreateApplication.component";
 import Applications from "../Applications/Applications.component";
 import { Users } from "../Users/Users.component";
+import { Route, Routes } from "react-router-dom";
+import { ApplicationDetails } from "../Applications/ApplicationDetails.component";
+import { QuestionCreator } from "../QuestionCreator/QuestionCreator.component";
 
 const layouts: Record<Roles, LayoutProps | null> = {
   [Roles.SUPERUSER]: {
@@ -44,9 +47,10 @@ const layouts: Record<Roles, LayoutProps | null> = {
         link: "/applications",
         element: <Applications />,
       },
-      "Savol yaratish": {
-        path: "/create-question",
-        element: <div>Create question</div>,
+      "Bo'limlar": {
+        path: "/categories/*",
+        link: "/categories",
+        element: <Categories />,
       },
       "Ishchilar ro'yxati": {
         path: "/users/*",
@@ -66,6 +70,14 @@ const App = () => {
   return (
     <div className="app">
       {layoutProps ? <Layout {...layoutProps} /> : "Error access denied!"}
+      <main>
+        <Routes>
+          <Route
+            path="/applications/:applicationId"
+            element={<ApplicationDetails />}
+          />
+        </Routes>
+      </main>
     </div>
   );
 };

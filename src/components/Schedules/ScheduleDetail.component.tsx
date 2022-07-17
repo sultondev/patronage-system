@@ -1,12 +1,18 @@
 import { Field, Form, Formik } from "formik";
 import { memo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Route, Routes } from "react-router-dom";
 import { useApi } from "../../hooks/useApi.hook";
 import { Schedule } from "../../typing/types/Schedule.type";
 import "./ScheduleDetail.style.css";
+import { userAtom } from "../../recoil/atoms";
+import { useRecoilState } from "recoil";
+import { Button } from "@mui/material";
+import { QuestionCreator } from "../QuestionCreator/QuestionCreator.component";
 const ScheduleDetailComponent = () => {
   const { scheduleId } = useParams();
-  // const [questionData, setQuestionData] = useState([]);
+  const [questionStatus, setQuestionStatus] = useState("hidden");
+  const [user] = useRecoilState(userAtom);
+
   const { data, error, loading } = useApi<Schedule>(`schedule/${scheduleId}`, {
     params: {
       include: "all",
@@ -19,6 +25,8 @@ const ScheduleDetailComponent = () => {
   if (error || !data) {
     return <div className="">Error...</div>;
   }
+
+  console.log(questionStatus);
 
   return (
     <section className="schedule-detail  my-4 py-4 border-t-2 border-black">
@@ -72,6 +80,28 @@ const ScheduleDetailComponent = () => {
           );
         })}
       </ul>
+      {user.role === "MODERATOR" && (
+        <div className="mt-10">
+          <Button
+            variant="contained"
+            onClick={(e) => {
+              e.preventDefault();
+              if (questionStatus === "hidden") {
+                setQuestionStatus("block");
+              } else {
+                setQuestionStatus("hidden");
+              }
+            }}
+          >
+            {questionStatus === "hidden"
+              ? "Savol Yaratish bo'limini ochish"
+              : "Savol Yaratish bo'limini yashirish"}
+          </Button>
+          <div className={`${questionStatus}`}>
+            <QuestionCreator scheduleID={Number(scheduleId)} />
+          </div>
+        </div>
+      )}
     </section>
   );
 };
