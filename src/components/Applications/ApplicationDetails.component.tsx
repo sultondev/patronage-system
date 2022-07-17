@@ -5,7 +5,9 @@ import { Application } from "../../typing/types/Application.type";
 
 export const ApplicationDetails = () => {
   const { applicationId } = useParams();
-  const { data, error, loading } = useApi(`applications/${applicationId}`);
+  const { data, error, loading } = useApi(
+    `applications/${applicationId}?include=all`
+  );
   const [location, setLocation] = useState<any>();
 
   useEffect(() => {
@@ -37,7 +39,32 @@ export const ApplicationDetails = () => {
             {data.location.latitude}
           </a>
         </h4>
-        <ul className=""></ul>
+        {/* <table className="table-auto">
+          <thead>
+            <tr>
+              <th>Savollar</th>
+              <th>Ha</th>
+              <th>Yo'q</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {data.questions.map((question) => (
+                <td key={question.id}>{question.title}</td>
+              ))}
+            </tr>
+            <tr>
+              {data.questions.map((question) => (
+                <td key={question.id}>{question.answer}</td>
+              ))}
+            </tr>
+            <tr>
+              <td>Shining Star</td>
+              <td>Earth, Wind, and Fire</td>
+              <td>1975</td>
+            </tr>
+          </tbody>
+        </table> */}
         <p className="text-2xl">Ariza raqami: {data.id}</p>
         <p>{data.comment}</p>
       </div>

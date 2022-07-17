@@ -71,7 +71,6 @@ const CreateClientForm: FC<Props> = ({ onCreate }) => {
             value={formik.values.comment}
             label="Ariza uchun izoh kiriting"
             fullWidth
-            required
           />
 
           <Button variant="outlined" fullWidth type="submit">
