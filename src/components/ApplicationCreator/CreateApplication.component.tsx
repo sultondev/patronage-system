@@ -12,6 +12,7 @@ import { useUser } from "../../hooks/useUser.hook";
 import AnswerQuestions from "./AnswerQuestions";
 import CreateApplicationForm from "./CreateApplicationForm";
 import CreateClientForm from "./CreateClientForm";
+import { useNavigate } from "react-router-dom";
 
 type Answer = {
   value: boolean;
@@ -35,6 +36,7 @@ type Application = {
 const CreateApplication = () => {
   const [activeStep, setActiveStep] = useState(0);
   const { user } = useUser();
+  const navigate = useNavigate();
 
   const [application, setApplication] = useState<Application>({
     location: {
@@ -80,7 +82,9 @@ const CreateApplication = () => {
           ...application,
           answers,
         });
+
         console.log(data);
+        navigate("/");
       } catch (err) {
         console.log(err);
       }
@@ -132,8 +136,16 @@ const CreateApplication = () => {
   };
 
   useEffect(() => {
-    console.log(application);
-  }, [application]);
+    navigator.geolocation.getCurrentPosition((position) => {
+      setApplication((application) => ({
+        ...application,
+        location: {
+          latitude: position.coords.latitude.toString(),
+          longitude: position.coords.longitude.toString(),
+        },
+      }));
+    });
+  }, []);
 
   return (
     <div className="w-full flex justify-center mt-10">
