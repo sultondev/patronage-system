@@ -34,13 +34,12 @@ const Applications = () => {
           <li key={app.id} className="flex relative">
             <Link
               to={`/applications/${app.id}`}
-              className="bg-blue-500 min-h-[300px] min-w-[200px] max-w-[400px] rounded-md text-white font-medium text-3xl px-4 py-1"
+              className="bg-blue-500 md:min-h-[300px] md:min-w-[200px] md:max-w-[400px] rounded-md text-white font-medium text-3xl px-4 py-1
+              ex-sm:min-w-[100%] ex-sm:min-h-[200px]
+              "
             >
-              <h3 className="text-2xl mb-2">
-                Ariza jo'natilgan hudud: {app.location}
-              </h3>
               <p className="text-2xl">Ariza raqami: {app.id}</p>
-              <p>{app.comment}</p>
+              <p className="md:text-lg ex-sm:text-base">{app.comment}</p>
             </Link>
             <p className="text-white font-bold absolute bottom-2 left-2">
               jo'natuvchi:{" "}
