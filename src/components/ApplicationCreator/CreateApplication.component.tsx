@@ -57,7 +57,7 @@ const CreateApplication = () => {
 
       handleNext();
     },
-    [setApplication]
+    [application]
   );
 
   const onApplicationCreate = useCallback(
@@ -70,7 +70,7 @@ const CreateApplication = () => {
       }));
       handleNext();
     },
-    [setApplication]
+    [application]
   );
   const onAnswersCreate = useCallback(
     async ({ answers }: Pick<Application, "answers">) => {
@@ -85,7 +85,7 @@ const CreateApplication = () => {
         console.log(err);
       }
     },
-    [setApplication]
+    [application]
   );
 
   const steps = useMemo<
@@ -124,7 +124,7 @@ const CreateApplication = () => {
         ),
       },
     ],
-    [application.categoryId]
+    [application]
   );
 
   const handleNext = () => {
