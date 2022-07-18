@@ -38,7 +38,7 @@ export const ApplicationDetails = () => {
         <h4 className="text-2xl font-bold mb-4">
           Ariza jo'natilgan hudud:
           <a
-            href={`http://maps.google.com/?ll=${
+            href={`http://maps.google.com/maps?q=loc:${
               location.latitude + "," + location.longitude
             }`}
             className="ml-2 bg-gray-700 text-white px-2 py-1 underline"
