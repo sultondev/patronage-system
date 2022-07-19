@@ -154,7 +154,9 @@ const CreateApplication = () => {
           {steps.map(({ label }, index) => {
             return (
               <Step key={index + "stepper-label"}>
-                <StepLabel>{label}</StepLabel>
+                <StepLabel>
+                  <span className="sm:block ex-sm:hidden">{label}</span>
+                </StepLabel>
               </Step>
             );
           })}
