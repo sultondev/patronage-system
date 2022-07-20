@@ -149,7 +149,7 @@ const CreateApplication = () => {
 
   return (
     <div className="w-full flex justify-center mt-10">
-      <Box sx={{ width: "60%" }}>
+      <Box sx={{ width: "90%" }}>
         <Stepper activeStep={activeStep}>
           {steps.map(({ label }, index) => {
             return (
