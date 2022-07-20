@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useApi } from "../../hooks/useApi.hook";
 import { Application } from "../../typing/types/Application.type";
@@ -47,7 +47,7 @@ export const ApplicationDetails = () => {
             {data.location.latitude}
           </a>
         </h4>
-        <div className="flex flex-col w-full md:px-6">
+        {/* <div className="flex flex-col w-full md:px-6">
           <>
             <div className="flex w-full justify-between">
               <div className="flex-grow">Savollar</div>
@@ -110,7 +110,34 @@ export const ApplicationDetails = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
+
+        <table className="table-auto">
+          <thead>
+            <tr>
+              <th>Song</th>
+              <th>Artist</th>
+              <th>Year</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
+              <td>Malcolm Lockyer</td>
+              <td>1961</td>
+            </tr>
+            <tr>
+              <td>Witchy Woman</td>
+              <td>The Eagles</td>
+              <td>1972</td>
+            </tr>
+            <tr>
+              <td>Shining Star</td>
+              <td>Earth, Wind, and Fire</td>
+              <td>1975</td>
+            </tr>
+          </tbody>
+        </table>
 
         <h6 className="px-6 text-2xl font-bold">Fuqoro haqidagi ma'lumotlar</h6>
         <div className="box flex flex-col w-full md:px-6">
