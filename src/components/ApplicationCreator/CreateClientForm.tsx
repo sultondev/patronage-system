@@ -83,6 +83,16 @@ const CreateClientForm: FC<Props> = ({ onCreate }) => {
               fullWidth
               required
             />
+            <TextField
+              id="personalNumber"
+              name="personalNumber"
+              type="text"
+              onChange={formik.handleChange}
+              value={formik.values.personalNumber}
+              label="Mijoz JSHSHIR raqamini kiriting"
+              fullWidth
+              required
+            />
             <FormControl fullWidth>
               <MobileDatePicker
                 label="Tug'ilgan sanasi"
@@ -94,16 +104,6 @@ const CreateClientForm: FC<Props> = ({ onCreate }) => {
                 )}
               />
             </FormControl>
-            <TextField
-              id="personalNumber"
-              name="personalNumber"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.personalNumber}
-              label="Mijoz JSHSHIR raqamini kiriting"
-              fullWidth
-              required
-            />
             <TextField
               id="address"
               name="address"

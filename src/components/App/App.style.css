@@ -1,0 +1,18 @@
+* {
+  font-family: "Source Pro", sans-serif, cursive, ;
+  font-weight: 500;
+}
+
+
+
+@font-face {
+    font-family: 'Source Pro';
+    src: url('../../assets/fonts/source-sans-pro/SourceSansPro-ExtraLight.ttf');
+    font-weight: 200;
+}
+
+@font-face {
+    font-family: 'Source Pro';
+    src: url('../../assets/fonts/source-sans-pro/SourceSansPro-ExtraLight.ttf');
+    font-weight: 200;
+}
