@@ -6,13 +6,14 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Link } from "react-router-dom";
 import { Question } from "../../typing/types/Question.type";
+import { Location } from "../../typing/types/Location.type";
 
 export const ApplicationDetails = () => {
   const { applicationId } = useParams();
   const { data, error, loading } = useApi(
     `applications/${applicationId}?include=all`
   );
-  const [location, setLocation] = useState<any>();
+  const [location, setLocation] = useState<Location>();
   const [schedules, setSchedules] = useState<Schedule[]>();
   useEffect(() => {
     if (data) {
@@ -47,7 +48,7 @@ export const ApplicationDetails = () => {
 
         <div className="w-full overflow-scroll">
           {schedules &&
-            schedules.map((schedule: Schedule, index: number) => {
+            schedules.map((schedule: Schedule) => {
               console.log(schedule);
               let goodStack = 0;
               let badStack = 0;
@@ -125,7 +126,9 @@ export const ApplicationDetails = () => {
                       <td colSpan={2} className="pl-2 border-r border-black">
                         {goodStack}
                       </td>
-                      <td colSpan={2} className="pl-2">{badStack}</td>
+                      <td colSpan={2} className="pl-2">
+                        {badStack}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -136,26 +139,30 @@ export const ApplicationDetails = () => {
         <h6 className="px-6 text-2xl font-bold">Fuqoro haqidagi ma'lumotlar</h6>
         <div className="box w-full overflow-scroll md:px-6">
           <table className="table-auto min-w-[500px] w-full">
-            <tbody
-              className="border-[1px] w-full border-black"
-            >
-            {Object.keys(data.client).map((keyName: any, index: number) => {
-              return (
-                <tr>
-                    <td className="text-center border-r border-b border-black px-[5px] py-[8px]" 
-                  colSpan={1}
-                    >
-                      {index + 1}.
-                    </td>
-                    <td className="text-left border-r border-b border-black pl-4"colSpan={11} >
-                      {compareTranslator(keyName)}
-                    </td>
-                    <td className="border-b border-black p-2" colSpan={1}>
-                      {data.client[keyName]}
-                    </td>
-                </tr>
-            );
-            })} 
+            <tbody className="border-[1px] w-full border-black">
+              {Object.keys(data.client).map(
+                (keyName: string, index: number) => {
+                  return (
+                    <tr key={keyName + index}>
+                      <td
+                        className="text-center border-r border-b border-black px-[5px] py-[8px]"
+                        colSpan={1}
+                      >
+                        {index + 1}.
+                      </td>
+                      <td
+                        className="text-left border-r border-b border-black pl-4"
+                        colSpan={11}
+                      >
+                        {compareTranslator(keyName)}
+                      </td>
+                      <td className="border-b border-black p-2" colSpan={1}>
+                        {data.client[keyName]}
+                      </td>
+                    </tr>
+                  );
+                }
+              )}
             </tbody>
           </table>
         </div>
@@ -175,17 +182,6 @@ export const ApplicationDetails = () => {
     </section>
   );
 };
-function arrayUniter(arg: any, destiny: string) {
-  const length = arg.length;
-  const stack = [];
-  for (let i = 0; i < length; i++) {
-    if (!arg[i]) {
-      return;
-    }
-    stack.unshift(...arg[i][destiny]);
-  }
-  return stack;
-}
 function compareTranslator(arg: any) {
   let res;
   switch (arg) {
