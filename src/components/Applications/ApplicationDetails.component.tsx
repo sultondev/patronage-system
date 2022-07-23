@@ -14,8 +14,6 @@ export const ApplicationDetails = () => {
   );
   const [location, setLocation] = useState<any>();
   const [schedules, setSchedules] = useState<Schedule[]>();
-  // let good = 0;
-  // let bad = 0;
   useEffect(() => {
     if (data) {
       const loc = JSON.parse(data.location);
@@ -121,13 +119,13 @@ export const ApplicationDetails = () => {
                         }
                       )}
                     <tr>
-                      <td colSpan={11} className="border-r border-black">
+                      <td colSpan={11} className="pl-2 border-r border-black">
                         Natijalar
                       </td>
-                      <td colSpan={2} className="border-r border-black">
+                      <td colSpan={2} className="pl-2 border-r border-black">
                         {goodStack}
                       </td>
-                      <td colSpan={2}>{badStack}</td>
+                      <td colSpan={2} className="pl-2">{badStack}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -136,29 +134,30 @@ export const ApplicationDetails = () => {
         </div>
 
         <h6 className="px-6 text-2xl font-bold">Fuqoro haqidagi ma'lumotlar</h6>
-        <div className="box flex flex-col w-full md:px-6">
-          <div className="flex flex-col">
+        <div className="box w-full overflow-scroll md:px-6">
+          <table className="table-auto min-w-[500px] w-full">
+            <tbody
+              className="border-[1px] w-full border-black"
+            >
             {Object.keys(data.client).map((keyName: any, index: number) => {
               return (
-                <div
-                  className="border-[1px] border-black flex justify-between"
-                  key={keyName.id}
-                >
-                  <div className="flex-grow flex ">
-                    <span className="border-r-[1px] border-black px-[5px] py-[8px]">
+                <tr>
+                    <td className="text-center border-r border-b border-black px-[5px] py-[8px]" 
+                  colSpan={1}
+                    >
                       {index + 1}.
-                    </span>
-                    <p className="md:max-w-[300px] ex-sm:max-w-[140px] p-2">
+                    </td>
+                    <td className="text-left border-r border-b border-black pl-4"colSpan={11} >
                       {compareTranslator(keyName)}
-                    </p>
-                  </div>
-                  <div className="md:basis-1/4 ex-sm:basis-1/3 border-l-[1px] border-black p-2">
-                    {data.client[keyName]}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                    </td>
+                    <td className="border-b border-black p-2" colSpan={1}>
+                      {data.client[keyName]}
+                    </td>
+                </tr>
+            );
+            })} 
+            </tbody>
+          </table>
         </div>
 
         <p className="text-2xl">Ariza raqami: {data.id}</p>
