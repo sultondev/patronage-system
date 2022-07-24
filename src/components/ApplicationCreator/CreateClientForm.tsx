@@ -73,17 +73,6 @@ const CreateClientForm: FC<Props> = ({ onCreate }) => {
               fullWidth
               required
             />
-            <FormControl fullWidth>
-              <MobileDatePicker
-                label="Tug'ilgan sanasi"
-                inputFormat="MM/dd/yyyy"
-                value={formik.values.dateBirth}
-                onChange={(e) => formik.setFieldValue("dateBirth", e, true)}
-                renderInput={({ color, ...params }) => (
-                  <TextField {...params} color="primary" />
-                )}
-              />
-            </FormControl>
             <TextField
               id="cardNumber"
               name="cardNumber"
@@ -104,6 +93,17 @@ const CreateClientForm: FC<Props> = ({ onCreate }) => {
               fullWidth
               required
             />
+            <FormControl fullWidth>
+              <MobileDatePicker
+                label="Tug'ilgan sanasi"
+                inputFormat="MM/dd/yyyy"
+                value={formik.values.dateBirth}
+                onChange={(e) => formik.setFieldValue("dateBirth", e, true)}
+                renderInput={({ color, ...params }) => (
+                  <TextField {...params} color="primary" />
+                )}
+              />
+            </FormControl>
             <TextField
               id="address"
               name="address"

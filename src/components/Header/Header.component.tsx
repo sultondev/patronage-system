@@ -12,7 +12,7 @@ const Header: FC<LayoutProps> = ({ routes }) => {
   return (
     <header className="">
       <div className="flex justify-between lg:items-center">
-        <h1 className="font-bold text-2xl">Patronaj sistemasi {user.role}</h1>
+        <h1 className="font-bold text-2xl">Patronaj sistemasi </h1>
         <NavBar routes={routes} />
         <button
           className="ex-sm:block ex-sm:text-3xl lg:hidden"

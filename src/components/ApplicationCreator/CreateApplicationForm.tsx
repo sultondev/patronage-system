@@ -35,7 +35,7 @@ const CreateClientForm: FC<Props> = ({ onCreate }) => {
 
         <form
           onSubmit={formik.handleSubmit}
-          className="signIn-box border-[1px] bg-white flex flex-col gap-4 items-center px-6 py-4 ex-sm:min-w-full md:min-w-[500px]"
+          className="submit-box border-[1px] bg-white flex flex-col gap-4 items-center px-6 py-4 ex-sm:min-w-full md:min-w-[500px]"
         >
           <FormControl fullWidth>
             <InputLabel id="category-label">Bo'limni tanlang</InputLabel>
