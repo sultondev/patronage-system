@@ -82,9 +82,7 @@ export const ApplicationDetails = () => {
                     {schedule &&
                       schedule.questions.map(
                         (question: Question, index: number) => {
-                          question.answers[0].checked
-                            ? goodStack++
-                            : badStack++;
+                          question.answers[0].value ? goodStack++ : badStack++;
                           return (
                             <tr key={question.id}>
                               <td className="border-r border-b border-black text-center max-w-[80px]">
@@ -101,7 +99,7 @@ export const ApplicationDetails = () => {
                                 colSpan={2}
                               >
                                 {question.answers[0] &&
-                                question.answers[0].checked ? (
+                                question.answers[0].value ? (
                                   <CheckIcon />
                                 ) : (
                                   ""
@@ -109,7 +107,7 @@ export const ApplicationDetails = () => {
                               </td>
                               <td className="border-b border-black" colSpan={2}>
                                 {question.answers[0] &&
-                                !question.answers[0].checked ? (
+                                !question.answers[0].value ? (
                                   <CloseIcon />
                                 ) : (
                                   ""

@@ -1,6 +1,6 @@
 export type Answer = {
   id: number;
-  checked: boolean;
+  value: boolean;
   questionId: number;
   applicantId: number;
 };

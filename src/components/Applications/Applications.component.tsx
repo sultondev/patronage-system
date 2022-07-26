@@ -1,99 +1,49 @@
-// import { authProtectedApi } from "../../config/axios.config";
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useApi } from "../../hooks/useApi.hook";
-import {
-  Avatar,
-  Divider,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Pagination,
-} from "@mui/material";
+import { useMemo, useCallback } from "react";
+import { Pagination } from "@mui/material";
 import { Box } from "@mui/system";
+
+import { ApplicationsList } from "./ApplicationsList.component";
+import { useSearchParams } from "react-router-dom";
+import { Paginated } from "../../typing/types/Paginated.type";
+import { Application } from "../../typing/types/Application.type";
+import { useApi } from "../../hooks/useApi.hook";
+
 const Applications = () => {
-  const { data, error, loading } = useApi("/applications/all");
-  const itemsPerPage = 10;
-  const [page, setPage] = useState(1);
-  const [apps, setApps] = useState([
-    {
-      id: 1,
-      location: "654654 54654654",
-      comment: null,
-      createdBy: 1,
-      categoryId: 1,
-      clientId: 1,
-      createdAt: "2022-07-03T07:01:44.510Z",
-      updatedAt: "2022-07-03T07:01:44.510Z",
+  const [search, setSearch] = useSearchParams();
+
+  const [page, size] = useMemo(
+    () => [Number(search.get("page")) || 1, Number(search.get("size")) || 10],
+    [search]
+  );
+
+  const handleChange = useCallback(
+    (e: any, page: number) => {
+      setSearch({
+        page: String(page),
+      });
     },
-  ]);
+    [search]
+  );
 
-  const [noOfPages, setNoOfPages] = useState(1);
+  const url = useMemo(
+    () => `/applications/paginated/${page}/${size}`,
+    [page, size]
+  );
 
-  const handleChange = (e: any, value: number) => {
-    console.log(value);
-    setPage(value);
-  };
+  const { data, error, loading } = useApi<Paginated<Application>>(url);
 
-  useEffect(() => {
-    if (data) {
-      setApps(data);
-      setNoOfPages(Math.ceil(data.length / itemsPerPage));
-    }
-  });
-
-  if (loading || error) {
-    return <div>{loading ? "Yuklanmoqda..." : "Hatolik yuz berdi"}</div>;
-  }
+  const totalPages = useMemo(
+    () => (data ? Math.ceil(data.count / size) : 0),
+    [data, size]
+  );
 
   return (
     <section>
       <h6 className="text-2xl">Arizalar Bo'limi</h6>
-      <List component="span">
-        {apps &&
-          apps
-            .slice((page - 1) * itemsPerPage, page * itemsPerPage)
-            .map((app) => {
-              const labelId = `list-secondary-label-${app.id}`;
-              return (
-                <>
-                  <ListItem
-                    key={app.id}
-                    button
-                    onClick={() => console.log("")}
-                    className="border-b-2 border-black"
-                  >
-                    <ListItemText
-                      id={labelId}
-                      primary={
-                        <Link
-                          to={`/applications/${app.id}`}
-                          className="text-blue-500 underline"
-                        >
-                          <p className="text-2xl">Ariza raqami: {app.id}</p>
-                        </Link>
-                      }
-                      className="flex justify-between"
-                    />
-                    <ListItemAvatar>
-                      <Link
-                        to={`/users/${app.createdBy}`}
-                        className=" px-2 py-1"
-                      >
-                        <Avatar alt={`Avatar n°`} src={""} className="" />
-                      </Link>
-                    </ListItemAvatar>
-                  </ListItem>
-                  <Divider />
-                </>
-              );
-            })}
-      </List>
-
+      <ApplicationsList data={data} error={error} loading={loading} />
       <Box component="span">
         <Pagination
-          count={noOfPages}
+          count={totalPages}
           page={page}
           onChange={handleChange}
           defaultPage={1}

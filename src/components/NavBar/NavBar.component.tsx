@@ -14,7 +14,7 @@ const NavBar: FC<LayoutProps> = ({ routes }) => {
     <nav
       className={`nav 
     z-20
-      ex-sm:absolute ex-sm:right-0 ex-sm:min-h-full ex-sm:bg-blue-500
+      ex-sm:fixed ex-sm:right-0 ex-sm:min-h-full ex-sm:bg-blue-500
     lg:min-h-auto lg:relative lg:block lg:bg-transparent
 
     ${menuState}
