@@ -1,41 +1,49 @@
-// import { authProtectedApi } from "../../config/axios.config";
-import { useState } from "react";
+import { useMemo, useCallback } from "react";
 import { Pagination } from "@mui/material";
 import { Box } from "@mui/system";
-// import { noOfPagesAtom } from "../../recoil/atoms";
-// import { useRecoilState } from "recoil";
+
 import { ApplicationsList } from "./ApplicationsList.component";
+import { useSearchParams } from "react-router-dom";
+import { Paginated } from "../../typing/types/Paginated.type";
+import { Application } from "../../typing/types/Application.type";
+import { useApi } from "../../hooks/useApi.hook";
+
 const Applications = () => {
-  const [page, setPage] = useState(1);
-  // const [startStack, setStartStack] = useRecoilState(startStackAtom);
-  // const [endStack, setEndStack] = useRecoilState(endStackAtom);
-  // const [noOfPages, setNoOfPages] = useRecoilState(noOfPagesAtom);
-  let startStack = 1;
-  let endStack = 10;
-  const handleChange = (e: any, value: number) => {
-    console.log(value);
-    console.log(page);
-    setPage(value);
-    if (page < value) {
-      startStack = endStack;
-      endStack += 10;
-      console.log(startStack, endStack);
-    } else if (page > value) {
-      // startStack = startStack - 10;
-      // endStack = startStack;
-      endStack -= 10;
-      startStack -= endStack;
-      console.log(startStack, endStack);
-    }
-  };
+  const [search, setSearch] = useSearchParams();
+
+  const [page, size] = useMemo(
+    () => [Number(search.get("page")) || 1, Number(search.get("size")) || 10],
+    [search]
+  );
+
+  const handleChange = useCallback(
+    (e: any, page: number) => {
+      setSearch({
+        page: String(page),
+      });
+    },
+    [search]
+  );
+
+  const url = useMemo(
+    () => `/applications/paginated/${page}/${size}`,
+    [page, size]
+  );
+
+  const { data, error, loading } = useApi<Paginated<Application>>(url);
+
+  const totalPages = useMemo(
+    () => (data ? Math.ceil(data.count / size) : 0),
+    [data, size]
+  );
 
   return (
     <section>
       <h6 className="text-2xl">Arizalar Bo'limi</h6>
-      <ApplicationsList start={startStack} end={endStack} page={page} />
+      <ApplicationsList data={data} error={error} loading={loading} />
       <Box component="span">
         <Pagination
-          count={4}
+          count={totalPages}
           page={page}
           onChange={handleChange}
           defaultPage={1}
