@@ -79,13 +79,13 @@ const AnswerQuestions: FC<Props> = ({ categoryId, onCreate }) => {
                   >
                     <Divider component="li" />
 
-                    {schedule.questions.map((question) => (
+                    {schedule.questions.map((question, index) => (
                       <>
                         <ListItem key={question.id}>
                           <ListItemText
                             disableTypography
                             primary={
-                              <Typography width={"80%"}>
+                              <Typography className="ex-sm:w-1/2 md:w-[70%]">
                                 {question.title}
                               </Typography>
                             }
