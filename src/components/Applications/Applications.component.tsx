@@ -12,10 +12,7 @@ const Applications = () => {
   const [search, setSearch] = useSearchParams();
 
   const [page, size] = useMemo(
-    () => [
-      Number(search.get("page")) * 5 || 1,
-      Number(search.get("size")) || 10,
-    ],
+    () => [Number(search.get("page")) || 1, Number(search.get("size")) || 10],
     [search]
   );
 
