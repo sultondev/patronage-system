@@ -1,68 +1,60 @@
-import { memo } from "react";
-import { Link, Routes, Route } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import { useApi } from "../../hooks/useApi.hook";
-import { Schedule } from "../../typing/types/Schedule.type";
-import ScheduleDetailComponent from "./ScheduleDetail.component";
-import "./Schedules.style.css";
-type CategoryType = {
-  id: number;
-  name: string;
-  createdAt: string;
-  updatedAt: string;
-  schedules: Schedule[];
-};
+import { useMemo, useCallback } from "react";
+import { Pagination } from "@mui/material";
+import { Box } from "@mui/system";
 
-const SchedulesComponent = () => {
-  const { categoryId } = useParams();
-  const { data, error, loading } = useApi<CategoryType>(
-    `categories/${categoryId}`,
-    {
-      params: {
-        include: "schedules_only",
-      },
-    }
+import { useSearchParams } from "react-router-dom";
+import { Paginated } from "../../typing/types/Paginated.type";
+import { useApi } from "../../hooks/useApi.hook";
+import { Category } from "../../typing/types/Category.type";
+import { SchedulesList } from "./SchedulesList.component";
+import { Schedule } from "../../typing/types/Schedule.type";
+const Schedules = () => {
+  const [search, setSearch] = useSearchParams();
+
+  const [page, size] = useMemo(
+    () => [Number(search.get("page")) || 1, Number(search.get("size")) || 10],
+    [search]
   );
 
-  if (error) {
-    return <div className="">Error...</div>;
-  }
-  if (loading || !data) {
-    return <div className="">Loading...</div>;
-  }
+  const handleChange = useCallback(
+    (e: any, page: number) => {
+      setSearch({
+        page: String(page),
+      });
+    },
+    [search]
+  );
 
+  const url = useMemo(
+    () => `/schedule/paginated/${page}/${size}`,
+    [page, size]
+  );
+
+  const { data, error, loading } = useApi<Paginated<Schedule>>(url);
+
+  const totalPages = useMemo(
+    () => (data ? Math.ceil(data.count / size) : 0),
+    [data, size]
+  );
   return (
-    <section className="schedule my-4 py-4 border-t-2 border-black">
-      <h2 className={"text-4xl font-bold mb-4"}>Tartiblar</h2>
-      <ul className="schedule-list flex gap-4 flex-wrap md:flex-row md:justify-start ex-sm:justify-center ex-sm:items-center ex-sm:flex-col">
-        {data.schedules.map((schedule) => {
-          return (
-            <li key={schedule.id} className="flex">
-              <Link
-                to={{
-                  pathname: `/categories/${categoryId}/schedules/${schedule.id}`,
-                }}
-                className="
-                schedule-list__item
-                bg-orange-500 
-                rounded-md text-white text-3xl px-4 py-1
-                ex-sm:text-lg
-                ex-sm:min-w-[136px] ex-sm:min-h-[198px] ex-sm:max-w-[136px] ex-sm:max-h-[198px] 
-                md:min-h-[300px] md:max-h-[300px] md:min-w-[200px] md:max-w-[200px] 
-                
-                "
-              >
-                {schedule.name}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-      <Routes>
-        <Route path="/:scheduleId" element={<ScheduleDetailComponent />} />
-      </Routes>
+    <section className="md:px-[80px] lg:px-[100px]">
+      <h6 className="text-2xl">Arizalar Bo'limi</h6>
+      <SchedulesList data={data} error={error} loading={loading} />
+      <Box component="span">
+        <Pagination
+          count={totalPages}
+          page={page}
+          onChange={handleChange}
+          defaultPage={1}
+          color="primary"
+          size="large"
+          variant="outlined"
+          shape="rounded"
+          className="my-10"
+        />
+      </Box>
     </section>
   );
 };
 
-export default memo(SchedulesComponent);
+export default Schedules;

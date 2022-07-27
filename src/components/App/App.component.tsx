@@ -12,6 +12,8 @@ import { Users } from "../Users/Users.component";
 import { Route, Routes } from "react-router-dom";
 import { ApplicationDetails } from "../Applications/ApplicationDetails.component";
 import { QuestionCreator } from "../QuestionCreator/QuestionCreator.component";
+import Schedules from "../Schedules/Schedules.component";
+import ScheduleDetailComponent from "../Schedules/ScheduleDetail.component";
 
 const layouts: Record<Roles, LayoutProps | null> = {
   [Roles.SUPERUSER]: {
@@ -34,7 +36,7 @@ const layouts: Record<Roles, LayoutProps | null> = {
         element: <CreateApplicationComponent />,
       },
       "Bo'limlar": {
-        path: "/categories/*",
+        path: "/categories",
         link: "/categories",
         element: <Categories />,
       },
@@ -48,7 +50,7 @@ const layouts: Record<Roles, LayoutProps | null> = {
         element: <Applications />,
       },
       "Bo'limlar": {
-        path: "/categories/*",
+        path: "/categories",
         link: "/categories",
         element: <Categories />,
       },
@@ -65,7 +67,11 @@ const App = () => {
   const layoutProps = useMemo(() => layouts[user.role as Roles], [user.role]);
 
   if (!user.id) {
-    return <div>Loading...</div>;
+    return (
+      <div className="md:px-[80px] lg:px-[100px]">
+        {!user.id ? "Yuklanmoqda..." : "Hatolik yuz berdi"}
+      </div>
+    );
   }
   return (
     <div className="app">
@@ -75,6 +81,14 @@ const App = () => {
           <Route
             path="/applications/:applicationId"
             element={<ApplicationDetails />}
+          />
+          <Route
+            path="/categories/:categoryId/schedules/*"
+            element={<Schedules />}
+          />
+          <Route
+            path="/schedules/:scheduleId"
+            element={<ScheduleDetailComponent />}
           />
         </Routes>
       </main>

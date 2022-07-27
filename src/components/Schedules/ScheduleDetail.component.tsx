@@ -3,7 +3,7 @@ import { memo, useState } from "react";
 import { useParams, Route, Routes } from "react-router-dom";
 import { useApi } from "../../hooks/useApi.hook";
 import { Schedule } from "../../typing/types/Schedule.type";
-import "./ScheduleDetail.style.css";
+import "./styles/ScheduleDetail.style.css";
 import { userAtom } from "../../recoil/atoms";
 import { useRecoilState } from "recoil";
 import { Button } from "@mui/material";
@@ -19,17 +19,18 @@ const ScheduleDetailComponent = () => {
     },
   });
 
-  if (loading) {
-    return <div className="">Loading...</div>;
-  }
-  if (error || !data) {
-    return <div className="">Error...</div>;
+  if (loading || error || !data) {
+    return (
+      <div className="md:px-[80px] lg:px-[100px]">
+        {loading ? "Yuklanmoqda..." : "Hatolik yuz berdi"}
+      </div>
+    );
   }
 
   console.log(questionStatus);
 
   return (
-    <section className="schedule-detail  my-4 py-4 border-t-2 border-black">
+    <section className="schedule-detail  my-4 py-4 border-t-2 border-black md:px-[80px] lg:px-[100px]">
       <div className="">
         <h2 className="text-xl p-1">{data.name}</h2>
       </div>
