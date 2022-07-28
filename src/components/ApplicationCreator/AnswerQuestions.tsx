@@ -45,12 +45,10 @@ const AnswerQuestions: FC<Props> = ({ categoryId, onCreate }) => {
     }
   }, [category]);
 
-  if (loading && !category) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error</div>;
+  if ((loading && !category) || error) {
+    return (
+      <div>{loading && !category ? "Yuklanmoqda..." : "Hatolik yuz berdi"}</div>
+    );
   }
 
   const handleToggle = (value: boolean, qID: number) => {

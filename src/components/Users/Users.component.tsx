@@ -15,8 +15,12 @@ export const Users = () => {
     }
   });
 
-  if (loading || error) {
-    return <div>{loading ? "Loading..." : "Error"}</div>;
+  if (loading || error || !data) {
+    return (
+      <div className="text-2xl">
+        {loading ? "Yuklanmoqda..." : "Hatolik yuz berdi"}
+      </div>
+    );
   }
   console.log(users);
   return (

@@ -36,6 +36,7 @@ const Applications = () => {
     () => (data ? Math.ceil(data.count / size) : 0),
     [data, size]
   );
+  console.log(data, page, size);
 
   return (
     <section>

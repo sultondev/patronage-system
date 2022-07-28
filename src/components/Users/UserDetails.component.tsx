@@ -13,10 +13,15 @@ export const UserDetails = () => {
     }
   });
 
-  if (loading || error) {
-    return <div>{loading ? "Loading..." : "Error"}</div>;
+  if (loading || error || !data) {
+    return (
+      <div className="text-2xl">
+        {loading
+          ? "Yuklanmoqda..."
+          : "Hatolik yuz berdi: Foydalanuvchi tarmoqda mavjud emas"}
+      </div>
+    );
   }
-
   return (
     <section className="udetails py-4">
       <div

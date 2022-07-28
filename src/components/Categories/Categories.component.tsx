@@ -4,16 +4,12 @@ import { Category } from "../../typing/types/Category.type";
 import SchedulesComponent from "../Schedules/Schedules.component";
 export const Categories = () => {
   const { data, error, loading } = useApi("categories/all");
-  if (loading) {
-    return <div className="">Loading...</div>;
+  if (loading || error || !data) {
+    return <div>{loading ? "Yuklanmoqda..." : "Hatolik yuz berdi"}</div>;
   }
-  if (error || !data) {
-    return <div className="">Error...</div>;
-  }
-
   return (
     <section className="categories py-4">
-      <h4 className="text-4xl font-bold mb-4">Bo&#39;limlar</h4>
+      <h4 className="text-4xl font-bold mb-4">Bo'limlar</h4>
       <ul className="categories-list flex gap-4 py-4 flex-wrap md:justify-start ex-sm:justify-center">
         {data.map((category: Category) => (
           <li key={category.id} className="flex">
@@ -26,12 +22,6 @@ export const Categories = () => {
           </li>
         ))}
       </ul>
-      <Routes>
-        <Route
-          path=":categoryId/schedules/*"
-          element={<SchedulesComponent />}
-        />
-      </Routes>
     </section>
   );
 };

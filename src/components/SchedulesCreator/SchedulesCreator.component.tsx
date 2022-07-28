@@ -1,25 +1,24 @@
 import { useFormik } from "formik";
 import { Button, TextField } from "@mui/material";
 import { authProtectedApi } from "../../config/axios.config";
-import { useNavigate, useParams } from "react-router-dom";
-type ScheduleValue = {
-  scheduleID: number;
+import { useNavigate } from "react-router-dom";
+type CategoryValue = {
+  categoryID: number;
 };
-export const QuestionCreator = (props: ScheduleValue) => {
-  const { scheduleID } = props;
-  const { categoryId } = useParams();
+export const SchedulesCreator = (props: CategoryValue) => {
+  const { categoryID } = props;
   const navigate = useNavigate();
   const { isSubmitting, errors, ...formik } = useFormik({
     initialValues: {
-      title: "",
-      scheduleId: scheduleID,
+      name: "",
+      categoryId: categoryID,
     },
     onSubmit: (values, formikHelpers) => {
       alert(JSON.stringify(values, null, 2));
       authProtectedApi()
-        .post("/questions", values)
+        .post("/schedule", values)
         .then(function () {
-          navigate(`/categories/${categoryId}/schedules`);
+          navigate(`/categories`);
           formikHelpers.resetForm();
         })
         .catch(function (error) {
@@ -41,14 +40,14 @@ export const QuestionCreator = (props: ScheduleValue) => {
         md:min-w-[500px]
         ex-sm:max-w-full"
       >
-        <h5 className="text-2xl">Savol qo'shish</h5>
+        <h5 className="text-2xl">Tartib qo'shish</h5>
         <TextField
-          id="title"
-          name="title"
+          id="name"
+          name="name"
           type="text"
           onChange={formik.handleChange}
-          value={formik.values.title}
-          label="Savolni kiriting"
+          value={formik.values.name}
+          label="Tartibni kiriting"
           fullWidth
           required
         />
