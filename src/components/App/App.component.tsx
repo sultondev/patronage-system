@@ -68,7 +68,7 @@ const App = () => {
 
   if (!user.id) {
     return (
-      <div className="md:px-[80px] lg:px-[100px]">
+      <div className="text-2xl md:px-[80px] lg:px-[100px]">
         {!user.id ? "Yuklanmoqda..." : "Hatolik yuz berdi"}
       </div>
     );
@@ -87,7 +87,7 @@ const App = () => {
             element={<Schedules />}
           />
           <Route
-            path="/schedules/:scheduleId"
+            path="/categories/:categoryId/schedules/:scheduleId"
             element={<ScheduleDetailComponent />}
           />
         </Routes>

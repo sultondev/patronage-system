@@ -17,10 +17,12 @@ export const SchedulesList = ({
   data,
   error,
   loading,
+  categoryId,
 }: {
   data: Paginated<Schedule>;
   loading: boolean;
   error: string | null;
+  categoryId: string;
 }) => {
   if (loading || error) {
     return <div>{loading ? "Yuklanmoqda..." : "Hatolik yuz berdi"}</div>;
@@ -44,7 +46,7 @@ export const SchedulesList = ({
                   primary={
                     <Link
                       // to={`/categories/${schedule.id}`}
-                      to={`/schedules/${schedule.id}`}
+                      to={`/categories/${categoryId}/schedules/${schedule.id}`}
                       className="text-blue-500 underline"
                     >
                       <p className="text-2xl">Tartib: {schedule.name}</p>

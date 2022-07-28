@@ -1,16 +1,21 @@
-import { useMemo, useCallback } from "react";
-import { Pagination } from "@mui/material";
+import { useMemo, useCallback, useState } from "react";
+import { Button, Pagination } from "@mui/material";
 import { Box } from "@mui/system";
 
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useParams } from "react-router-dom";
 import { Paginated } from "../../typing/types/Paginated.type";
 import { useApi } from "../../hooks/useApi.hook";
 import { Category } from "../../typing/types/Category.type";
 import { SchedulesList } from "./SchedulesList.component";
 import { Schedule } from "../../typing/types/Schedule.type";
+import { userAtom } from "../../recoil/atoms";
+import { useRecoilState } from "recoil";
+import { SchedulesCreator } from "../SchedulesCreator/SchedulesCreator.component";
 const Schedules = () => {
   const [search, setSearch] = useSearchParams();
-
+  const [user] = useRecoilState(userAtom);
+  const [questionStatus, setQuestionStatus] = useState("hidden");
+  const { categoryId } = useParams();
   const [page, size] = useMemo(
     () => [Number(search.get("page")) || 1, Number(search.get("size")) || 10],
     [search]
@@ -26,7 +31,7 @@ const Schedules = () => {
   );
 
   const url = useMemo(
-    () => `/schedule/paginated/${page}/${size}`,
+    () => `/schedule/paginated/${page}/${size}?category_id=${categoryId}`,
     [page, size]
   );
 
@@ -36,10 +41,22 @@ const Schedules = () => {
     () => (data ? Math.ceil(data.count / size) : 0),
     [data, size]
   );
+  if (loading || error || !data || !categoryId) {
+    return (
+      <div className="md:px-[80px] lg:px-[100px]">
+        {loading ? "Yuklanmoqda..." : "Hatolik yuz berdi"}
+      </div>
+    );
+  }
   return (
     <section className="md:px-[80px] lg:px-[100px]">
-      <h6 className="text-2xl">Arizalar Bo'limi</h6>
-      <SchedulesList data={data} error={error} loading={loading} />
+      <h6 className="text-2xl">Tartiblar Bo'limi</h6>
+      <SchedulesList
+        data={data}
+        error={error}
+        loading={loading}
+        categoryId={categoryId}
+      />
       <Box component="span">
         <Pagination
           count={totalPages}
@@ -53,6 +70,28 @@ const Schedules = () => {
           className="my-10"
         />
       </Box>
+      {user.role === "MODERATOR" && (
+        <div className="mt-10">
+          <Button
+            variant="contained"
+            onClick={(e) => {
+              e.preventDefault();
+              if (questionStatus === "hidden") {
+                setQuestionStatus("block");
+              } else {
+                setQuestionStatus("hidden");
+              }
+            }}
+          >
+            {questionStatus === "hidden"
+              ? "Tartib yaratish bo'limini ochish"
+              : "Tartib yaratish bo'limini yashirish"}
+          </Button>
+          <div className={`${questionStatus} my-10`}>
+            <SchedulesCreator categoryID={Number(categoryId)} />
+          </div>
+        </div>
+      )}
     </section>
   );
 };

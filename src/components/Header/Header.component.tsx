@@ -10,7 +10,7 @@ const Header: FC<LayoutProps> = ({ routes }) => {
   const [user] = useRecoilState(userAtom);
 
   return (
-    <header className="ex-sm:px-2">
+    <header className="ex-sm:px-4 ex-sm:py-4 ex-sm:mb-4 shadow-md">
       <div className="flex justify-between lg:items-center">
         <h1 className="font-bold text-2xl">Patronaj sistemasi </h1>
         <NavBar routes={routes} />
