@@ -53,13 +53,13 @@ const CreateUser = () => {
   });
 
   return (
-    <section className="createUser h-screen flex justify-center items-center">
-      <div className="container mx-auto flex justify-center flex-col gap-6 items-center">
+    <section className="createUser my-20  h-screen flex justify-center items-center">
+      <div className="container  mx-auto flex justify-center flex-col gap-6 items-center">
         <h1 className="text-3xl">Foydalanuvchi yaratish</h1>
 
         <form
           onSubmit={formik.handleSubmit}
-          className="signIn-box border-[1px] border-black bg-white  flex flex-col gap-4 items-center px-6 py-4
+          className="signIn-box border-[1px] border-black bg-white  flex flex-col gap-4 items-center px-6 py-10
           ex-sm:min-w-full
           md:min-w-[500px]
           "
