@@ -19,7 +19,7 @@ const layouts: Record<Roles, LayoutProps | null> = {
   [Roles.SUPERUSER]: {
     routes: {
       "Bo'limlar": {
-        path: "/categories/*",
+        path: "/categories",
         link: "/categories",
         element: <Categories />,
       },

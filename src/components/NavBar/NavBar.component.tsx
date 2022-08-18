@@ -40,7 +40,7 @@ const NavBar: FC<LayoutProps> = ({ routes }) => {
           </li>
         ))}
         <li className="nav-list__item cursor-pointer" onClick={logout}>
-          Log Out
+          Profildan Chiqish
         </li>
       </ul>
     </nav>
