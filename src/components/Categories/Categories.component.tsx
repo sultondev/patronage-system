@@ -4,6 +4,9 @@ import { Category } from "../../typing/types/Category.type";
 import SchedulesComponent from "../Schedules/Schedules.component";
 export const Categories = () => {
   const { data, error, loading } = useApi("categories/all");
+
+  console.log(data);
+
   if (loading || error || !data) {
     return <div>{loading ? "Yuklanmoqda..." : "Hatolik yuz berdi"}</div>;
   }

@@ -54,6 +54,16 @@ const CreateClientForm: FC<Props> = ({ onCreate }) => {
             className="signIn-box border-[1px] bg-white flex flex-col gap-4 items-center px-6 py-4 ex-sm:min-w-full md:min-w-[500px]"
           >
             <TextField
+              id="cardNumber"
+              name="cardNumber"
+              type="text"
+              onChange={formik.handleChange}
+              value={formik.values.cardNumber}
+              label="Mijoz passport raqamini kiriting"
+              fullWidth
+              required
+            />
+            <TextField
               id="name"
               name="name"
               type="text"
@@ -70,16 +80,6 @@ const CreateClientForm: FC<Props> = ({ onCreate }) => {
               onChange={formik.handleChange}
               value={formik.values.surname}
               label="Mijoz familiyasini kiriting"
-              fullWidth
-              required
-            />
-            <TextField
-              id="cardNumber"
-              name="cardNumber"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.cardNumber}
-              label="Mijoz passport raqamini kiriting"
               fullWidth
               required
             />

@@ -30,22 +30,23 @@ const ScheduleDetailComponent = () => {
   console.log(questionStatus);
 
   return (
-    <section className="schedule-detail  my-4 py-4 border-t-2 border-black md:px-[80px] lg:px-[100px]">
+    <section className="schedule-detail  my-4 py-4 md:px-[80px] lg:px-[100px]">
       <div className="">
         <h2 className="text-xl p-1">{data.name}</h2>
       </div>
       <ul className="schedule-detail-list flex flex-col gap-2">
-        {data.questions.map((question) => {
+        {data.questions.map((question, index) => {
           return (
             <li
               key={question.id}
-              className="schedule-detail-list__item bg-orange-400  shadow-lg 
-              hadow-orange-600/50 text-white md:py-4 md:px-4 ex-sm:py-6 
+              className="schedule-detail-list__item border border-blue-500 shadow-lg 
+              hadow-orange-600/50 text-black md:py-4 md:px-4 ex-sm:py-6 
               ex-sm:px-8 ex-sm:max-w-full
               md:max-w-auto
               "
             >
-              <div className="flex ">
+              <div className="flex gap-2">
+                <div className="text-base">{index + 1}. </div>
                 <label htmlFor={question.title} className="flex-grow-[1]">
                   {question.title}
                 </label>

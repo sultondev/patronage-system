@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 
 const _BASE_CONFIG: AxiosRequestConfig = {
-  baseURL: "https://patronage-system-uz.herokuapp.com/api",
+  baseURL: "https://api.patronaj.xyz/api",
   headers: {
     "Content-Type": "application/json",
   },
