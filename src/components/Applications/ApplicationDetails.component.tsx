@@ -31,7 +31,7 @@ export const ApplicationDetails = () => {
   }
   console.log(schedules);
   return (
-    <section className="adetails md:px-[80px] lg:px-[100px]">
+    <section className="adetails my-8 md:px-[80px] lg:px-[100px]">
       <div className="box border-2 border-slate-700 flex flex-col gap-4 py-4 px-2">
         <h4 className="text-2xl font-bold mb-4">
           Ariza jo'natilgan hudud:
@@ -59,7 +59,7 @@ export const ApplicationDetails = () => {
                 >
                   <thead className="w-full overflow-x-scroll">
                     <tr className="border-none">
-                      <th colSpan={11} className="text-left">
+                      <th colSpan={11} className="text-left text-xl">
                         {schedule.name}
                       </th>
                     </tr>

@@ -31,7 +31,8 @@ const AnswerQuestions: FC<Props> = ({ categoryId, onCreate }) => {
   });
 
   const answers = useRef<{ value: boolean; questionId: number }[]>([]);
-
+  const questionsAmount = 0;
+  const answeredQuestions = 0;
   const onSubmit = useCallback(() => {
     onCreate({ answers: answers.current });
   }, [answers.current]);
@@ -57,8 +58,9 @@ const AnswerQuestions: FC<Props> = ({ categoryId, onCreate }) => {
     );
     answers.current[index] = { ...answers.current[index], value };
   };
+  console.log(questionsAmount);
   return (
-    <section>
+    <section className="my-8">
       {category && (
         <>
           <h3 className="text-xl text-center font-bold">
@@ -77,44 +79,46 @@ const AnswerQuestions: FC<Props> = ({ categoryId, onCreate }) => {
                   >
                     <Divider component="li" />
 
-                    {schedule.questions.map((question, index) => (
-                      <>
-                        <ListItem key={question.id}>
-                          <ListItemText
-                            disableTypography
-                            primary={
-                              <Typography className="ex-sm:w-1/2 md:w-[70%]">
-                                {question.title}
-                              </Typography>
-                            }
-                          />
-                          <ListItemSecondaryAction>
-                            <RadioGroup
-                              onChange={(e) =>
-                                handleToggle(
-                                  Boolean(e.target.value),
-                                  question.id
-                                )
+                    {schedule.questions.map((question, index) => {
+                      return (
+                        <>
+                          <ListItem key={question.id}>
+                            <ListItemText
+                              disableTypography
+                              primary={
+                                <Typography className="ex-sm:w-1/2 md:w-[70%]">
+                                  {question.title}
+                                </Typography>
                               }
-                              row
-                              defaultValue={false}
-                            >
-                              <FormControlLabel
-                                value={true}
-                                control={<Radio />}
-                                label="Ha"
-                              />
-                              <FormControlLabel
-                                value={false}
-                                control={<Radio />}
-                                label="Yo'q"
-                              />
-                            </RadioGroup>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                        <Divider component="li" />
-                      </>
-                    ))}
+                            />
+                            <ListItemSecondaryAction>
+                              <RadioGroup
+                                onChange={(e) =>
+                                  handleToggle(
+                                    Boolean(e.target.value),
+                                    question.id
+                                  )
+                                }
+                                row
+                                // defaultValue={false}
+                              >
+                                <FormControlLabel
+                                  value={true}
+                                  control={<Radio />}
+                                  label="Ha"
+                                />
+                                <FormControlLabel
+                                  value={false}
+                                  control={<Radio />}
+                                  label="Yo'q"
+                                />
+                              </RadioGroup>
+                            </ListItemSecondaryAction>
+                          </ListItem>
+                          <Divider component="li" />
+                        </>
+                      );
+                    })}
                   </List>
                 </div>
               );
@@ -122,7 +126,11 @@ const AnswerQuestions: FC<Props> = ({ categoryId, onCreate }) => {
           </div>
         </>
       )}
-      <Button variant="contained" onClick={onSubmit}>
+      <Button
+        variant="contained"
+        onClick={onSubmit}
+        // disabled={questionsAmount === answeredQuestions ? false : true}
+      >
         Arizani yuborish
       </Button>
     </section>
